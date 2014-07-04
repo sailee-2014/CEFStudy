@@ -99,7 +99,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //   FUNCTION: InitInstance(HINSTANCE, int)
 //
 //   PURPOSE: Saves instance handle and creates main window
-//
+// 
 //   COMMENTS:
 //
 //        In this function, we save the instance handle in a global variable and
@@ -165,8 +165,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 										WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON
 										|WS_DISABLED, x, 2, BUTTON_WIDTH, URLBAR_HEIGHT,
 										hWnd, (HMENU) IDC_NAV_FORWARD, hInst, NULL); 
+			x += BUTTON_WIDTH;
+			reloadWnd = CreateWindow(_T("Button"), _T("Reload"), 
+										WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON
+										|WS_DISABLED, x, 2, BUTTON_WIDTH, URLBAR_HEIGHT,
+										hWnd, (HMENU) IDC_NAV_RELOAD, hInst, NULL);
 
+			x += BUTTON_WIDTH;
+			stopWnd = CreateWindow(_T("Button"), _T("Stop"), 
+									WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+									x, 2, BUTTON_WIDTH, URLBAR_HEIGHT,
+									hWnd, (HMENU)IDC_NAV_STOP, hInst, NULL);
 
+			x += BUTTON_WIDTH;
+
+			editWnd = CreateWindow(_T("Edit"), _T("URL"),
+									WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT
+									| ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_DISABLED,
+									x, 2, rect.right - BUTTON_WIDTH * 4,
+									URLBAR_HEIGHT, hWnd, 0, hInst, NULL);
 
 
 

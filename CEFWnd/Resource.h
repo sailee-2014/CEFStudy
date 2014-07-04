@@ -14,6 +14,9 @@
 #define IDI_SMALL				108
 #define IDC_CEFWND			109
 #define IDC_NAV_BACK		200
+#define IDC_NAV_FORWARD		201
+#define IDC_NAV_RELOAD		202
+#define IDC_NAV_STOP		203
 #define IDC_MYICON				2
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1

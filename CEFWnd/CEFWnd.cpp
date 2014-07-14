@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "CEFWnd.h"
+#include "ClientHandler.h"
+#include "internal/cef_ptr.h"
+#include "cef_client.h"
+
 
 #define MAX_LOADSTRING 100
 #define MAX_URL_LENGTH  255
@@ -14,6 +18,9 @@
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
+
+//ADD TODO:
+CefRefPtr<ClientHandler> g_handler;
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -179,11 +186,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			x += BUTTON_WIDTH;
 
-			editWnd = CreateWindow(_T("Edit"), _T("URL"),
+			editWnd = CreateWindow(_T("EDIT"), _T("URL"),
 									WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT
-									| ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_DISABLED,
+									| ES_AUTOVSCROLL | ES_AUTOHSCROLL ,
 									x, 2, rect.right - BUTTON_WIDTH * 4,
 									URLBAR_HEIGHT, hWnd, 0, hInst, NULL);
+			
+			editWndOldProc = 
+				reinterpret_cast<WNDPROC> (GetWindowLongPtr(editWnd, GWLP_WNDPROC));
+			SetWindowLongPtr(editWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WndProc));
+			
+			rect.top += URLBAR_HEIGHT;
+			CefBrowserSettings setting;
+			CefWindowInfo info;
+
+			g_handler = new ClientHandler();
+
+			CefBrowserHost::CreateBrowser(info, g_handler.get(), g_handler->GetStartupURL(), setting, NULL);
 
 
 

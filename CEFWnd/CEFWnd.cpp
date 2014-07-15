@@ -6,6 +6,7 @@
 #include "ClientHandler.h"
 #include "internal/cef_ptr.h"
 #include "cef_client.h"
+#include "cef_app.h"
 
 
 #define MAX_LOADSTRING 100
@@ -22,6 +23,9 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 //ADD TODO:
 CefRefPtr<ClientHandler> g_handler;
 
+char szWorkingDir[MAX_PATH];  // The current working directory
+
+
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -37,6 +41,33 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
  	// TODO: Place code here.
+	CefMainArgs main_args(hInstance);
+	//CefRefPtr<ClientApp> app(new ClientApp);
+
+	// Execute the secondary process, if any.
+	//int exit_code = CefExecuteProcess(main_args, app.get());
+	//if (exit_code >= 0)
+	//	return exit_code;
+
+	// Retrieve the current working directory.
+	//if (_getcwd(szWorkingDir, MAX_PATH) == NULL)
+	//	szWorkingDir[0] = 0;
+
+	//// Parse command line arguments. The passed in values are ignored on Windows.
+	//AppInitCommandLine(0, NULL);
+
+	CefSettings settings;
+
+	//// Populate the settings based on command line arguments.
+	//AppGetSettings(settings);
+
+	// Initialize CEF.
+	CefInitialize(main_args, settings, app.get());
+
+	// Register the scheme handler.
+	//scheme_test::InitTest();
+
+
 	MSG msg;
 	HACCEL hAccelTable;
 
@@ -62,6 +93,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
+	// Shut down CEF.
+	CefShutdown();
+
 
 	return (int) msg.wParam;
 }
